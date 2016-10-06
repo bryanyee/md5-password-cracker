@@ -5,9 +5,8 @@ let hash; // md5 value of zebra
 let numWorkers;
 
 
-$('#submit').on('click', function(e) {
+$('#submit').on('click', (e) => {
   e.preventDefault();
-  console.log("I'm Working");
   hash = $('#hash').val();
   length = parseInt($('#length').val());
   numWorkers = parseInt($('#workers').val());
@@ -18,6 +17,7 @@ function startWorkers() {
   const numCombos = Math.pow(26, length); // 26^3 === 17576
   const frag = Math.round(numCombos / numWorkers);
   startTime = Date.now();
+
   for (let i = 0; i < numWorkers; i += 1) {
     const begin = frag * i;
     const end = begin + (frag - 1);
@@ -32,15 +32,12 @@ function startWorkers() {
 
 // handling worker message
 function handleMessage(e) {
-  if(e.data.cmd === 'success') {
-    let duration = Math.round((Date.now() - startTime) / 1000);
-    console.log("this is duration: ", duration);
+  if (e.data.cmd === 'success') {
+    const duration = Math.round((Date.now() - startTime) / 1000);
+    console.log(`Worker: ${e.data.id} found word: ${e.data.clearText} in ${duration} seconds`);
+
     workerArr.forEach((worker) => {
       worker.terminate();
     });
-    console.log(`Worker: ${e.data.id} found word: ${e.data.clearText} in ${duration} seconds`);
   }
 }
-
-
-

@@ -3,5 +3,9 @@ module.exports = {
     "installedESLint": true,
     "plugins": [
         "react"
-    ]
+    ],
+    "globals": {
+        "jQuery": true,
+        "$": true
+    }
 };
